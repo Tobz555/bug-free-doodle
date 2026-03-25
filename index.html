@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sema Data – Kenyan Political Fact-Checking</title>
+  <meta name="description" content="Data-driven political fact-checking for Kenya's next generation. No spin. Just receipts.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ── PROGRESS BAR ── -->
+<div id="prog"></div>
+
+<!-- ════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════ -->
+<nav>
+  <a href="#" class="logo">
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+      <circle cx="13" cy="12" r="10" stroke="#1d4ed8" stroke-width="2" fill="none"/>
+      <rect x="6"  y="7" width="3" height="8"  fill="#f5f0e8" rx="1"/>
+      <rect x="11" y="4" width="3" height="11" fill="#f5f0e8" rx="1"/>
+      <rect x="16" y="9" width="3" height="6"  fill="#f5f0e8" rx="1"/>
+      <path d="M12 22 L12 26 L9 26" stroke="#1d4ed8" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse cx="26" cy="21" rx="5" ry="8" fill="#c8102e"/>
+      <line x1="21" y1="13" x2="31" y2="29" stroke="#f5f0e8" stroke-width="1.4"/>
+      <line x1="31" y1="13" x2="21" y2="29" stroke="#f5f0e8" stroke-width="1.4"/>
+      <line x1="21" y1="13" x2="31" y2="13" stroke="#f5f0e8" stroke-width="1.4"/>
+      <line x1="21" y1="29" x2="31" y2="29" stroke="#f5f0e8" stroke-width="1.4"/>
+    </svg>
+    <span class="logo-text">Sema <span>Data</span></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#fact-checks">Fact‑Checks</a></li>
+    <li><a href="#politicians">Politicians</a></li>
+    <li><a href="#analysis">Analysis</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="nav-search-wrap">
+      <svg class="search-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="5" stroke="white" stroke-width="1.5"/>
+        <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="srch" placeholder="Search claims…" autocomplete="off" aria-label="Search fact-checks">
+      <div class="search-dropdown" id="sdrop" role="listbox"></div>
+    </div>
+    <button class="dark-btn" id="darkbtn" aria-label="Toggle dark mode">☽</button>
+    <a href="#submit" class="nav-cta">Submit Claim</a>
+    <button class="hamburger" id="burger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mmenu">
+  <a href="#">Home</a>
+  <a href="#fact-checks">Fact‑Checks</a>
+  <a href="#politicians">Politicians</a>
+  <a href="#analysis">Analysis</a>
+  <a href="#glossary">Glossary</a>
+  <a href="#submit">Submit a Claim</a>
+</div>
+
+<!-- ════════════════════════════════════
+     BREAKING TICKER
+════════════════════════════════════ -->
+<div class="ticker" aria-label="Breaking updates">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-label">New</span>Fact-Check: Housing units claim — MISLEADING</span>
+    <span class="ticker-item"><span class="ticker-label">Data</span>MP attendance Q1 2026 — records released</span>
+    <span class="ticker-item"><span class="ticker-label">Alert</span>Youth unemployment: 35.2% — KNBS 2026</span>
+    <span class="ticker-item"><span class="ticker-label">Analysis</span>National debt hits KSh 11.1 trillion</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="ticker-item"><span class="ticker-label">New</span>Fact-Check: Housing units claim — MISLEADING</span>
+    <span class="ticker-item"><span class="ticker-label">Data</span>MP attendance Q1 2026 — records released</span>
+    <span class="ticker-item"><span class="ticker-label">Alert</span>Youth unemployment: 35.2% — KNBS 2026</span>
+    <span class="ticker-item"><span class="ticker-label">Analysis</span>National debt hits KSh 11.1 trillion</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     HERO
+════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <!-- Kenya map ghost -->
+  <svg class="hero-map" viewBox="0 0 400 520" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M200 45 C230 50 270 60 310 90 C350 120 370 160 375 210 C380 260 360 320 330 370 C300 420 265 460 230 480 C210 490 190 492 170 485 C145 475 120 450 100 415 C75 375 60 330 50 280 C38 225 45 170 70 125 C90 88 130 60 165 48 Z"/>
+    <circle cx="205" cy="230" r="12" fill="none" stroke="white" stroke-width="3"/>
+  </svg>
+
+  <div>
+    <div class="eyebrow">Kenyan Political Fact‑Checking</div>
+    <h1>Facts.<br><em>Not</em> Noise.</h1>
+    <p class="hero-sub">
+      Data‑driven analysis for Kenya's next generation.
+      We verify political claims, decode budgets, and hold power accountable — with receipts.
+    </p>
+    <div class="hero-stats">
+      <div><span class="hs-num" id="c1">0</span><span class="hs-lbl">Fact‑Checks</span></div>
+      <div><span class="hs-num" id="c2">0%</span><span class="hs-lbl">Claims were False</span></div>
+      <div><span class="hs-num" id="c3">0</span><span class="hs-lbl">Politicians Tracked</span></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#fact-checks" class="btn-p">Browse Fact‑Checks</a>
+      <a href="#submit" class="btn-o">Submit a Claim</a>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <span class="verdict v-misleading"><span class="vdot"></span>Misleading</span>
+    <blockquote class="hero-claim">
+      "We have delivered 50,000 affordable housing units to Kenyans since 2023."
+    </blockquote>
+    <p class="hero-meta">Government claim · March 2026 · Budget Address</p>
+    <p class="hero-excerpt">
+      Official records show only 6,200 units completed — 12.4% of the stated figure.
+      The remainder are at varying construction stages with no confirmed delivery dates.
+    </p>
+    <div class="mini-chart" aria-hidden="true">
+      <div class="mbar" style="height:90%;background:#c8102e" title="Claimed: 50,000"></div>
+      <div class="mbar" style="height:12%;background:#006b3f" title="Completed: 6,200"></div>
+      <div class="mbar" style="height:5%;background:#aaa"    title="Occupied: 2,800"></div>
+    </div>
+    <a href="#" class="card-link">Read full fact‑check</a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     FACT-CHECKS
+════════════════════════════════════ -->
+<main>
+  <div id="fact-checks">
+    <div class="sec-hdr rv">
+      <h2 class="sec-title">Recent Fact‑Checks</h2>
+      <a href="#" class="see-all">View all →</a>
+    </div>
+
+    <div class="filters rv">
+      <button class="chip active" data-f="all">All</button>
+      <button class="chip cr"     data-f="false">False</button>
+      <button class="chip cg"     data-f="true">True</button>
+      <button class="chip cy"     data-f="misleading">Misleading</button>
+      <button class="chip"        data-f="missing">Missing Evidence</button>
+      <button class="chip"        data-f="economy">Economy</button>
+      <button class="chip"        data-f="elections">Elections 2027</button>
+    </div>
+
+    <div class="fact-grid" id="fgrid">
+
+      <article class="fc feat rv" data-c="false economy">
+        <div class="fc-tag">
+          <span class="verdict v-false" style="font-size:.6rem;padding:.16rem .48rem"><span class="vdot"></span>False</span>
+          Economy · 14 Mar 2026
+        </div>
+        <h3>"Kenya's GDP growth was 7.2% in 2025, best in Africa."</h3>
+        <p class="fc-ex">World Bank data puts Kenya's 2025 GDP at 4.8%, ranking 11th in sub-Saharan Africa. The 7.2% figure cites an outdated 2022 IMF projection revised twice since.</p>
+        <div class="fc-foot"><span>Achieng Odhiambo</span><span class="shares">12.4k</span></div>
+      </article>
+
+      <article class="fc rv" data-c="true health">
+        <div class="fc-tag">
+          <span class="verdict v-true" style="font-size:.6rem;padding:.16rem .48rem"><span class="vdot"></span>True</span>
+          Health · 10 Mar 2026
+        </div>
+        <h3>"NHIF now covers 4.7 million Kenyans — up from 2.1M in 2020."</h3>
+        <p class="fc-ex">NHIF records confirm 4.69 million active contributors as of December 2025, consistent with the reported figure.</p>
+        <div class="fc-foot"><span>Brian Mutua</span><span class="shares">6.2k</span></div>
+      </article>
+
+      <article class="fc rv" data-c="missing security">
+        <div class="fc-tag">
+          <span class="verdict v-missing" style="font-size:.6rem;padding:.16rem .48rem"><span class="vdot"></span>Missing Evidence</span>
+          Security · 8 Mar 2026
+        </div>
+        <h3>"Crime dropped 30% in Nairobi since new policing reforms."</h3>
+        <p class="fc-ex">NPS has not released comparable crime data since 2023. No public dataset supports this specific claim.</p>
+        <div class="fc-foot"><span>Faith Waweru</span><span class="shares">4.8k</span></div>
+      </article>
+
+      <article class="fc rv" data-c="misleading education">
+        <div class="fc-tag">
+          <span class="verdict v-misleading" style="font-size:.6rem;padding:.16rem .48rem"><span class="vdot"></span>Misleading</span>
+          Education · 5 Mar 2026
+        </div>
+        <h3>"100% of secondary schools now have internet access under CBC."</h3>
+        <p class="fc-ex">Ministry data shows 41% of public secondary schools have functional internet. Private school numbers skew the overall figure.</p>
+        <div class="fc-foot"><span>Dennis Mwangi</span><span class="shares">8.1k</span></div>
+      </article>
+
+      <article class="fc rv" data-c="false elections">
+        <div class="fc-tag">
+          <span class="verdict v-false" style="font-size:.6rem;padding:.16rem .48rem"><span class="vdot"></span>False</span>
+          Elections 2027 · 3 Mar 2026
+        </div>
+        <h3>"Voter registration hit 25 million in 2025 — highest ever."</h3>
+        <p class="fc-ex">IEBC data shows 22.1 million registered voters. The 25M figure conflates total citizens of voting age with actual registrants.</p>
+        <div class="fc-foot"><span>Lydia Chebet</span><span class="shares">9.7k</span></div>
+      </article>
+
+    </div>
+  </div>
+</main>
+
+<!-- ════════════════════════════════════
+     POLITICIAN TRACKER
+════════════════════════════════════ -->
+<section class="pol-section" id="politicians">
+  <div class="sec-hdr rv">
+    <h2 class="sec-title" style="color:var(--white)">Politician Tracker</h2>
+    <a href="#" class="see-all" style="color:var(--gold)">Full scorecard →</a>
+  </div>
+  <p style="color:rgba(245,240,232,.42);font-size:.78rem;margin-top:-.75rem;margin-bottom:.25rem">
+    Claims verified per public figure — updated monthly
+  </p>
+  <div class="pol-grid rv">
+
+    <a href="#" class="pol-card">
+      <div class="pol-av" style="background:linear-gradient(135deg,#1a4a2e,#006b3f)">RR</div>
+      <div class="pol-name">Ruto, W.</div>
+      <div class="pol-role">President</div>
+      <div class="pol-scores">
+        <span class="pscore ps-f">42% False</span>
+        <span class="pscore ps-m">28% Mislead</span>
+        <span class="pscore ps-t">30% True</span>
+      </div>
+      <div class="pol-meter"><div class="pol-fill" data-w="70"></div></div>
+    </a>
+
+    <a href="#" class="pol-card">
+      <div class="pol-av" style="background:linear-gradient(135deg,#6b0f1a,#c8102e)">RA</div>
+      <div class="pol-name">Odinga, R.</div>
+      <div class="pol-role">Opposition Leader</div>
+      <div class="pol-scores">
+        <span class="pscore ps-f">31% False</span>
+        <span class="pscore ps-m">22% Mislead</span>
+        <span class="pscore ps-t">47% True</span>
+      </div>
+      <div class="pol-meter"><div class="pol-fill" data-w="53"></div></div>
+    </a>
+
+    <a href="#" class="pol-card">
+      <div class="pol-av" style="background:linear-gradient(135deg,#1a2a5a,#1d4ed8)">MW</div>
+      <div class="pol-name">Wetang'ula, M.</div>
+      <div class="pol-role">Speaker, Nat. Assembly</div>
+      <div class="pol-scores">
+        <span class="pscore ps-f">25% False</span>
+        <span class="pscore ps-m">30% Mislead</span>
+        <span class="pscore ps-t">45% True</span>
+      </div>
+      <div class="pol-meter"><div class="pol-fill" data-w="55"></div></div>
+    </a>
+
+    <a href="#" class="pol-card">
+      <div class="pol-av" style="background:linear-gradient(135deg,#3a2a00,#d4a72c)">KK</div>
+      <div class="pol-name">Kindiki, K.</div>
+      <div class="pol-role">Deputy President</div>
+      <div class="pol-scores">
+        <span class="pscore ps-f">35% False</span>
+        <span class="pscore ps-m">25% Mislead</span>
+        <span class="pscore ps-t">40% True</span>
+      </div>
+      <div class="pol-meter"><div class="pol-fill" data-w="60"></div></div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+     DATA TILES
+════════════════════════════════════ -->
+<div class="data-section">
+  <div class="sec-hdr rv">
+    <h2 class="sec-title gold" style="color:var(--white)">Kenya By The Numbers</h2>
+    <a href="#" class="see-all" style="color:var(--gold)">All data →</a>
+  </div>
+  <div class="data-grid rv">
+    <a href="#" class="dtile"><span class="dnum r">35.2%</span><span class="dlbl">Youth Unemployment<br>KNBS Q4 2025</span><span class="dchg neg">↑ 2.1pp from 2024</span></a>
+    <a href="#" class="dtile"><span class="dnum y">2.3%</span><span class="dlbl">MPs Under 35<br>Current Parliament</span><span class="dchg neg">↓ 0.5pp since 2022</span></a>
+    <a href="#" class="dtile"><span class="dnum g">4.8%</span><span class="dlbl">GDP Growth Rate<br>World Bank 2025</span><span class="dchg">↑ 0.3pp from 2024</span></a>
+    <a href="#" class="dtile"><span class="dnum" style="color:var(--white);font-size:1.75rem">KSh 11.1T</span><span class="dlbl">National Debt<br>Treasury Jan 2026</span><span class="dchg neg">↑ KSh 1.3T in 6 months</span></a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     CHARTS
+════════════════════════════════════ -->
+<main>
+  <div class="charts-section">
+    <div class="sec-hdr rv">
+      <h2 class="sec-title g">Interactive Data</h2>
+      <a href="#" class="see-all">All datasets →</a>
+    </div>
+    <div class="charts-grid rv">
+      <div class="chart-card">
+        <div class="chart-title">Unemployment Rate by Age Group — 2025</div>
+        <div class="chart-sub">Source: Kenya National Bureau of Statistics Q4 2025</div>
+        <div class="chart-wrap"><canvas id="bchart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Fact-Check Verdicts — 2026 Q1</div>
+        <div class="chart-sub">136 claims verified · Jan–Mar 2026</div>
+        <div class="donut-wrap"><canvas id="dchart"></canvas></div>
+        <div class="donut-legend">
+          <div class="dleg-item"><div class="dleg-dot" style="background:#c8102e"></div>False (42%)</div>
+          <div class="dleg-item"><div class="dleg-dot" style="background:#d4a72c"></div>Misleading (28%)</div>
+          <div class="dleg-item"><div class="dleg-dot" style="background:#555"></div>Missing Evidence (15%)</div>
+          <div class="dleg-item"><div class="dleg-dot" style="background:#006b3f"></div>True (15%)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       ANALYSIS + TRENDING SIDEBAR
+  ════════════════════════════════ -->
+  <div class="analysis-grid" id="analysis">
+    <div>
+      <div class="sec-hdr rv">
+        <h2 class="sec-title">Analysis &amp; Explainers</h2>
+        <a href="#" class="see-all">View all →</a>
+      </div>
+      <div class="rv">
+        <a href="#" class="analysis-item"><span class="anum">01</span><div><div class="atitle">Kenya's 2026/27 Budget: What KSh 4.3 Trillion Actually Buys</div><div class="ameta">Budget <span class="rtime">12 min</span> 18 Mar 2026</div></div></a>
+        <a href="#" class="analysis-item"><span class="anum">02</span><div><div class="atitle">Who Owns Kenya's Debt? A County-by-County Breakdown</div><div class="ameta">Economy <span class="rtime">8 min</span> 15 Mar 2026</div></div></a>
+        <a href="#" class="analysis-item"><span class="anum">03</span><div><div class="atitle">Gen Z in Parliament: The 2027 Numbers You Need to Know</div><div class="ameta">Elections 2027 <span class="rtime">6 min</span> 12 Mar 2026</div></div></a>
+        <a href="#" class="analysis-item"><span class="anum">04</span><div><div class="atitle">What Is The EACC and Has It Ever Prosecuted Anyone?</div><div class="ameta">Corruption <span class="rtime">10 min</span> 9 Mar 2026</div></div></a>
+        <a href="#" class="analysis-item"><span class="anum">05</span><div><div class="atitle">Why Kenya's Shilling Keeps Falling — and What It Means For You</div><div class="ameta">Economy <span class="rtime">7 min</span> 5 Mar 2026</div></div></a>
+      </div>
+    </div>
+    <div class="rv">
+      <div class="sec-hdr"><h2 class="sec-title">Trending</h2></div>
+      <div class="sidebar-card">
+        <div class="sidebar-hdr">🔥 Most Shared This Week</div>
+        <a href="#" class="sidebar-item"><span class="srank">01</span><span class="stitle">Housing units: 50,000 or 6,200?</span><span class="scount">12.4k</span></a>
+        <a href="#" class="sidebar-item"><span class="srank">02</span><span class="stitle">Voter registration — what IEBC actually said</span><span class="scount">9.7k</span></a>
+        <a href="#" class="sidebar-item"><span class="srank">03</span><span class="stitle">GDP: Kenya 11th in Africa, not 1st</span><span class="scount">8.1k</span></a>
+        <a href="#" class="sidebar-item"><span class="srank">04</span><span class="stitle">CBC internet access: 41%, not 100%</span><span class="scount">7.3k</span></a>
+        <a href="#" class="sidebar-item"><span class="srank">05</span><span class="stitle">What KSh 11 trillion debt means for you</span><span class="scount">6.9k</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       GEN Z GLOSSARY
+  ════════════════════════════════ -->
+  <div class="gloss-section" id="glossary">
+    <div class="sec-hdr rv">
+      <h2 class="sec-title g">Gen Z Glossary</h2>
+      <a href="#" class="see-all">Full glossary →</a>
+    </div>
+    <p style="color:var(--text-muted);font-size:.82rem;margin-top:-1rem;margin-bottom:0" class="rv">
+      Political terms, explained in plain language. No spin.
+    </p>
+    <div class="gloss-grid rv">
+      <div class="gcard"><div class="gterm">Budget Deficit</div><div class="gdef">When government spends more than it collects in taxes. Kenya's 2025 deficit was KSh 831 billion — borrowed money funded essential services.</div><span class="gtag">Economy · Finance</span></div>
+      <div class="gcard"><div class="gterm">EACC</div><div class="gdef">Ethics and Anti-Corruption Commission. Can investigate but cannot prosecute — referral to the DPP is required. Prosecutions remain rare since 2011.</div><span class="gtag">Institutions · Corruption</span></div>
+      <div class="gcard"><div class="gterm">National Debt</div><div class="gdef">Money the government owes locally and abroad. At KSh 11.1 trillion, every Kenyan effectively owes ~KSh 207,000.</div><span class="gtag">Economy · Finance</span></div>
+      <div class="gcard"><div class="gterm">Gazette Notice</div><div class="gdef">Published in the Kenya Gazette — the official government record. A decision only becomes legally binding once gazetted.</div><span class="gtag">Law · Government</span></div>
+      <div class="gcard"><div class="gterm">Vote of No Confidence</div><div class="gdef">A parliamentary motion to remove a leader. Requires a majority. Rarely succeeds due to party discipline.</div><span class="gtag">Parliament · Politics</span></div>
+      <div class="gcard"><div class="gterm">Supplementary Budget</div><div class="gdef">An additional mid-year budget when spending diverges from the original plan. Kenya has passed one every fiscal year for 5 consecutive years.</div><span class="gtag">Budget · Parliament</span></div>
+    </div>
+  </div>
+</main>
+
+<!-- ════════════════════════════════════
+     SUBMIT A CLAIM
+════════════════════════════════════ -->
+<div class="submit" id="submit">
+  <div>
+    <h2>Heard Something Suspicious?</h2>
+    <p>
+      Submit any political claim, speech, or statistic and our team will investigate.
+      The most-requested claims are prioritised. We publish full methodology for every verdict.
+    </p>
+  </div>
+  <form class="sform" id="submit-form">
+    <input  type="text"  placeholder="The claim (quote exactly if possible)" required>
+    <input  type="text"  placeholder="Source: where did you hear or read it?">
+    <input  type="email" placeholder="Your email (optional — we'll notify you)">
+    <textarea            placeholder="Any extra context, links, or screenshots?"></textarea>
+    <button type="submit">Submit Claim →</button>
+    <div id="sub-ok">✓ Received. We'll investigate and notify you if a verdict is published.</div>
+  </form>
+</div>
+
+<!-- ════════════════════════════════════
+     FOOTER
+════════════════════════════════════ -->
+<footer>
+  <div class="kbar">
+    <div class="kb1"></div><div class="kb2"></div>
+    <div class="kb3"></div><div class="kb4"></div>
+  </div>
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:900;color:var(--white)">
+        Sema <span style="color:var(--red)">Data</span>
+      </div>
+      <p>Kenya's independent political fact-checking platform. Built for young people who want facts, not spin. No noise. Just receipts.</p>
+      <div class="ft-socials">
+        <a href="#" class="soc">X</a>
+        <a href="#" class="soc">IG</a>
+        <a href="#" class="soc">TT</a>
+        <a href="#" class="soc">YT</a>
+        <a href="#" class="soc">WA</a>
+      </div>
+    </div>
+    <div class="ft-col">
+      <h4>Content</h4>
+      <ul>
+        <li><a href="#">Fact‑Checks</a></li>
+        <li><a href="#">Analysis</a></li>
+        <li><a href="#">Explainers</a></li>
+        <li><a href="#">Data Explorer</a></li>
+        <li><a href="#">Glossary</a></li>
+        <li><a href="#">Politicians</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Methodology</a></li>
+        <li><a href="#">Corrections Policy</a></li>
+        <li><a href="#">Funding</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Work With Us</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h4>Newsletter</h4>
+      <p style="font-size:.77rem;line-height:1.5;margin-bottom:.7rem">
+        Weekly fact-checks in your inbox. No spam.
+      </p>
+      <input type="email" placeholder="your@email.com"
+        style="width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:var(--white);padding:.5rem .7rem;font-size:.77rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:.4rem">
+      <button style="background:var(--green);color:#fff;border:none;padding:.5rem 1rem;font-size:.72rem;font-weight:700;cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em">
+        Subscribe →
+      </button>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2026 Sema Data. All rights reserved.</span>
+    <span style="color:rgba(245,240,232,.25)">Built for Kenya's next generation.</span>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════
+     NEWSLETTER POPUP
+════════════════════════════════════ -->
+<div class="nl-popup" id="nlpop" role="dialog" aria-label="Newsletter signup">
+  <button class="nl-close" id="nlclose" aria-label="Close">✕</button>
+  <h4>Stay Ahead of the Spin</h4>
+  <p>Weekly fact-checks, straight to your inbox. Join 14,000+ Kenyans getting the receipts.</p>
+  <div class="nl-form">
+    <input type="email" placeholder="your@email.com" aria-label="Email address">
+    <button>Join Free</button>
+  </div>
+</div>
+
+<!-- ── JavaScript ── -->
+<script src="js/main.js"></script>
+</body>
+</html>
